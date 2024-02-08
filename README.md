@@ -1,0 +1,3 @@
+TihinkPHP框架Validate验证器的扩展规则
+
+兼容TP8及以上版本

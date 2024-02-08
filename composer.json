@@ -1,0 +1,22 @@
+{
+    "name": "legolas3703/think-validate-extend",
+    "description": "Some Descriptions...",
+    "type": "library",
+    "license": "Apache 2.0",
+    "autoload": {
+        "psr-4": {
+            "Legolas3703\\ThinkValidateExtend\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "legolas3703",
+            "email": "legolas3703@163.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+		"php": ">=8.0",
+		"topthink/framework": "^8.0"
+	}
+}
