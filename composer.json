@@ -2,7 +2,7 @@
     "name": "legolas3703/think-validate-extend",
     "description": "Some Descriptions...",
     "type": "library",
-    "license": "Apache 2.0",
+    "license": "Apache-2.0",
     "autoload": {
         "psr-4": {
             "Legolas3703\\ThinkValidateExtend\\": "src/"
