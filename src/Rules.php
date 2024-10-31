@@ -74,9 +74,11 @@ class Rules
 	{
 		if( is_null($value) )
 		{
-			return false;
+			return true;
 		}
+
 		$json = json_decode($value, true);
+
 		return (is_array($json) && $json) ? true : false;
 	}
 
@@ -90,12 +92,18 @@ class Rules
 	*/
 	public function requireIn($value, string $rule, array $data=[]) : bool
 	{
+		if( is_null($value) )
+		{
+			return true;
+		}
+
 		$rule_arr = explode(',', $rule);
 		$field = array_shift($rule_arr);
 		if( in_array($data[$field], $rule_arr) )
 		{
 			return empty($value) ? false : true;
 		}
+
 		return true;
 	}
 
@@ -107,6 +115,11 @@ class Rules
 	*/
 	public function inTable($value, string $rule) : bool
 	{
+		if( is_null($value) )
+		{
+			return true;
+		}
+
 		$rule_arr = explode(',', $rule);
 		$table = $rule_arr[0];
 		$field = $rule_arr[1];
@@ -126,7 +139,13 @@ class Rules
 	*/
 	public function notInTable($value, string $rule) : bool
 	{
+		if( is_null($value) )
+		{
+			return true;
+		}
+
 		$check = $this->inTable($value, $rule);
+
 		return $check ? false : true;
 	}
 
@@ -139,6 +158,11 @@ class Rules
 	*/
 	public function minByte($value, int $rule) : bool
 	{
+		if( is_null($value) )
+		{
+			return true;
+		}
+
 		$length = strlen($value);
 
 		return $length >= $rule;
@@ -153,6 +177,11 @@ class Rules
 	*/
 	public function maxByte($value, int $rule) : bool
 	{
+		if( is_null($value) )
+		{
+			return true;
+		}
+
 		$length = strlen($value);
 
 		return $length <= $rule;
@@ -169,6 +198,11 @@ class Rules
 	*/
 	public function lengthByte($value, string $rule) : bool
 	{
+		if( is_null($value) )
+		{
+			return true;
+		}
+
 		$length = strlen($value);
 
 		// 区间验证
@@ -194,8 +228,9 @@ class Rules
 	{
 		if( is_null($value) )
 		{
-			return false;
+			return true;
 		}
+		
 		switch($rule)
 		{
 			// 普通模式
