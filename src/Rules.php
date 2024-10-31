@@ -3,6 +3,11 @@ namespace Legolas3703\ThinkValidateExtend;
 use think\Validate;
 use think\facade\Config;
 
+/**
+ * 扩展验证规则类
+ * 所有规则的形参value均不做数据类型限定，避免非必填（未设置require规则）的参数调用规则时报错
+ *（非必填参数调用规则，value的值为NULL）
+ */
 class Rules
 {
 	/**
@@ -62,12 +67,15 @@ class Rules
 
 	/**
 	 * 验证是否为有效的JSON
-	 * @access public
-     * @param Srring $value 待检测的字符串
+	 * @param $value 待检测的值
 	 * @return Bool
 	 */
-	public function isJson(string $value) : Bool
+	public function isJson($value) : bool
 	{
+		if( is_null($value) )
+		{
+			return false;
+		}
 		$json = json_decode($value, true);
 		return (is_array($json) && $json) ? true : false;
 	}
@@ -75,13 +83,12 @@ class Rules
 
 	/**
 	* 当A字段的值在列表中时，B字段为必填
-	* @access public
 	* @param Mixed $value B字段值
 	* @param String $rule 验证规则 格式：字段A的名字,列表值1,列表值2...列表值n
 	* @param Array $data 数据
 	* @return Bool
 	*/
-	public function requireIn($value, string $rule, array $data=[]) : Bool
+	public function requireIn($value, string $rule, array $data=[]) : bool
 	{
 		$rule_arr = explode(',', $rule);
 		$field = array_shift($rule_arr);
@@ -94,12 +101,11 @@ class Rules
 
 	/**
 	* 验证值是否存在于指定表字段中
-	* @access public
-	* @param String $value 字段值
+	* @param $value 字段值
 	* @param String $rule 验证规则 格式：数据表名（不含前缀）,字段名
 	* @return Bool
 	*/
-	public function inTable(string $value, string $rule) : Bool
+	public function inTable($value, string $rule) : bool
 	{
 		$rule_arr = explode(',', $rule);
 		$table = $rule_arr[0];
@@ -114,12 +120,11 @@ class Rules
 
 	/**
 	* 验证值是否不存在于指定表字段中
-	* @access public
-	* @param String $value 字段值
+	* @param $value 字段值
 	* @param String $rule 验证规则 格式：数据表,字段名
 	* @return Bool
 	*/
-	public function notInTable(string $value, string $rule) : Bool
+	public function notInTable($value, string $rule) : bool
 	{
 		$check = $this->inTable($value, $rule);
 		return $check ? false : true;
@@ -128,12 +133,11 @@ class Rules
 
 	/**
 	* 验证字符串字节数是否达到最小值
-	* @access public
-	* @param String $value 字段值
+	* @param $value 字段值
 	* @param Int $rule 验证规则 格式：字节数
 	* @return Bool
 	*/
-	public function minByte(string $value, int $rule) : Bool
+	public function minByte($value, int $rule) : bool
 	{
 		$length = strlen($value);
 
@@ -143,12 +147,11 @@ class Rules
 
 	/**
 	* 验证字符串字节数是否超过最大值
-	* @access public
-	* @param String $value 字段值
+	* @param $value 字段值
 	* @param Int $rule 验证规则 格式：字节数
 	* @return Bool
 	*/
-	public function maxByte(string $value, int $rule) : Bool
+	public function maxByte($value, int $rule) : bool
 	{
 		$length = strlen($value);
 
@@ -158,14 +161,13 @@ class Rules
 
 	/**
 	* 验证字符串字节数，支持定长/区间验证
-	* @access public
-	* @param String $value 字段值
+	* @param $value 字段值
 	* @param String $rule
 	*	定长验证规则 格式：字节数（整数）
 	*	区间验证规则 格式：最小值（整数）,最大值（整数）
 	* @return Bool
 	*/
-	public function lengthByte(string $value, string $rule) : Bool
+	public function lengthByte($value, string $rule) : bool
 	{
 		$length = strlen($value);
 
@@ -184,13 +186,16 @@ class Rules
 
 	/**
 	 * 过滤数组
-	 * @access public
-	 * @param Array $value 字段值
+	 * @param $value 字段值
 	 * @param String $rule 验证规则 [normal-普通模式，有非空值即可通过 strict-严格模式，禁止存在空值]
 	 * @return Bool
 	 */
-	public function arrayFilter(array $value, string $rule) : Bool
+	public function arrayFilter($value, string $rule) : bool
 	{
+		if( is_null($value) )
+		{
+			return false;
+		}
 		switch($rule)
 		{
 			// 普通模式
