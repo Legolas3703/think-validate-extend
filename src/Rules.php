@@ -124,7 +124,15 @@ class Rules
 		$table = $rule_arr[0];
 		$field = $rule_arr[1];
 
-		$db = app()->db->name($table);
+		if(str_contains($table, '\\'))
+		{
+			// 指定模型类
+			$db = new $table;
+		}
+		else
+		{
+			$db = app()->db->name($table);
+		}
 		$check = $db->where($field, $value)->field('id')->find();
 
 		return $check ? true : false;
@@ -230,7 +238,7 @@ class Rules
 		{
 			return true;
 		}
-		
+
 		switch($rule)
 		{
 			// 普通模式
